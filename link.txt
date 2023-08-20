@@ -1,0 +1,3 @@
+Github Link: https://github.com/mahendrabp/a433-microservices-submission/tree/proyek-pertama
+Docker hub link : https://hub.docker.com/repository/docker/mahendrabp/item-app/general
+Live project link : http://dicoding-bmam.mahendrabp.id/
