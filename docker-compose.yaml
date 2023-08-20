@@ -1,0 +1,35 @@
+version: '3.7' #docker compose version 3.7
+
+services: # init service
+  item-app: # service "app" name
+    container_name: item-app
+    restart: always #automatically restart if the container stopped
+    image: mahendrabp/item-app:v1 #image from docker hub
+    ports:
+      - '80:8080' #expose port from 8080 container to host 80 (http)
+    links: #links container
+      - item-db
+    depends_on: #order which the service is started, in this case, item-app will be started after item-db
+      - item-db
+    networks: #the apps and db must be in one network, so we create a network and start container inside this network
+      - proyek-pertama
+
+  item-db: # service "db" name
+    container_name: item-db
+    image: mongo:3 # pull mongo image from docker hub
+    volumes:
+      - app-db:/data/db # create volume app-db and linked to /data/db (default mongo storage)
+    # no username and password for auth?
+    ports:
+      - '27017:27017' #open port 27017 in host machine
+    networks:
+      - proyek-pertama
+
+volumes: #defined named volume
+  app-db:
+
+networks: #defined named network
+  proyek-pertama:
+    driver: bridge
+    #external: true #this line is indicates that network is external and not be created by compose
+
