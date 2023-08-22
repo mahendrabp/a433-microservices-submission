@@ -1,0 +1,51 @@
+# doc: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
+# The name of your workflow. GitHub displays the names of your workflows on your repository's "Actions" tab.
+name: CI-karsajobs
+
+# The name for workflow runs generated from the workflow. GitHub displays the workflow run name in the list of workflow runs on your repository's "Actions" tab
+run-name: Implement Continuous Integration for branch karsajobs by @${{ github.actor }}
+
+# configure workflows to automatically run based on specific events. In this case the workflow will be triggered in the CI system when pull-request/push in karsajob branch
+on:
+  push: #trigger when push
+    branches:
+      - 'karsajobs'
+  pull_request: #trigger when PR
+    branches: #target branches (can multiple branch
+      - 'karsajobs'
+
+# A workflow run is made up of one or more jobs, which run in parallel by default.
+jobs:
+  # https://github.com/hadolint/hadolint-action
+  lint-dockerfile: # job id  for unique identifier
+    name: Linter # set a name for the job, which is displayed in the GitHub UI.
+    runs-on: ubuntu-22.04 #define the type of machine to run the job on. (mandatory)
+    steps: # A job contains a sequence of tasks called steps. Steps can run commands, run setup tasks, or run an action
+      - uses: actions/checkout@v3 # Reference to check out the repository code
+      - uses: hadolint/hadolint-action@v3.1.0 # use hadolint-action
+        with: # A map of the input parameters defined by the action (Each input parameter is a key/value pair)
+          dockerfile: Dockerfile # input parameters
+
+  test-app:
+    name: Test App
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      # Runs command-line programs using the operating system's shell.
+      - name: Run unit testing #If you do not provide a name, the step name will default to the text specified in the run command.
+        run: go test -v -short --count=1 $(go list ./...)
+
+  build-app-karsajobs:
+    name: Build App Karsajobs
+    runs-on: ubuntu-22.04
+    needs: [lint-dockerfile, test-app] # ensure the linting and testing are passed before build and push the image
+    steps:
+      - uses: actions/checkout@v3 # must use this reference. if you dont use this, will error directory/file not found when execute the file/folder inside repos
+      - name: Push image to docker hub registry
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }} # create this secrets first in your repo's setting
+          DOCKERHUB_PASSWD: ${{ secrets.DOCKERHUB_PASSWD }}
+        run: |
+          chmod +x build_push_image_karsajobs.sh # Ensure the script is executable
+          ./build_push_image_karsajobs.sh         # Run the Bash script
+
