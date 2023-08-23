@@ -9,7 +9,7 @@ spec: # defines the specifications of the StatefulSet.
       app: mongo # key "app" with value "mongo"
       category: database # key "category" with value "database"
   serviceName: mongo # defines the name of service that will access the StatefulSet
-  replicas: 2 # set how many replica will be made
+  replicas: 1 # set how many replica will be made
   minReadySeconds: 10 # sets the minimum time in seconds that replica must be ready before it's call ready.
 
   template: # defines the configuration for the template
