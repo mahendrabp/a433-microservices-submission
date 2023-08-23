@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment # define deployment resource
+metadata:
+  name: karsajobs-ui-deployment # sets the name of the Deployment
+  labels: # assigns labels
+    app: karsajobs # assigns the label "app" with the value "karsajobs.
+    category: frontend # assigns the label "category" with the value "frontend.
+spec: # defines the spec
+  selector: # selects which Pods to manage
+    matchLabels:
+      app: karsajobs
+      category: frontend
+  replicas: 1 # one replicas (instances) of the application will be created
+  template: # defines the template for creating Pods that managed by deployment
+    metadata:
+      labels: # assigns labels to the Pod template
+        app: karsajobs
+        category: frontend
+    spec: # defines the specifications for the Pods
+      containers:
+        - name: karsajobs-ui # sets the name of the container
+          image: mahendrabp/karsajobs-ui:latest # specifies the Docker image, you have to use image in container registry
+          ports:
+            - containerPort: 8000 # specifies the ports exposed by the container
+

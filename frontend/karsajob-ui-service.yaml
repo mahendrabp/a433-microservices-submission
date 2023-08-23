@@ -7,7 +7,9 @@ metadata:
     category: frontend
 spec:
   ports: # specify the ports that the Service should expose
-    - port: 8000 # exposes port 8000
+    - protocol: TCP
+      port: 8080 # exposes port 80
+      targetPort: 8000
   selector: # specifies how the Service should route traffic
     app: karsajobs # selects Pods with this label
     category: frontend
