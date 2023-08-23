@@ -1,0 +1,13 @@
+Image registry: 
+karsajobs: https://hub.docker.com/repository/docker/mahendrabp/karsajobs
+karsajobs-ui: https://hub.docker.com/repository/docker/mahendrabp/karsajobs-ui/general
+
+Github repos:
+https://github.com/mahendrabp/a433-microservices-submission/tree/kubernetes
+
+Link (optional):
+karsajobs-ui: http://karsajobs.mahendrabp.id/manage-job
+karsajobs-api: http://api-karsajobs.mahendrabp.id
+
+Note:
+frontend will take some time to load, idk why, but maybe because frontend using dev env instead prod env, but it works actually
