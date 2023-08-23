@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service # define kubernetes's service
+metadata:
+  name: karsajobs # sets the name of the Service to
+  labels: # assigns labels
+    app: karsajobs
+    category: backend
+spec:
+  ports: # specify the ports that the Service should expose
+    - port: 8080 # exposes port 8080
+  selector: # specifies how the Service should route traffic
+    app: karsajobs # selects Pods with this label
+    category: backend
+  type: NodePort # im not really sure why using this type (just follow the tutorial using this type :D *will explore later)
+

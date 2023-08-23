@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment # define deployment resource
+metadata:
+  name: karsajobs-deployment # sets the name of the Deployment
+  labels: # assigns labels
+    app: karsajobs # assigns the label "app" with the value "karsajobs.
+    category: backend # assigns the label "category" with the value "backend.
+spec: # defines the spec
+  selector: # selects which Pods to manage
+    matchLabels:
+      app: karsajobs
+      category: backend
+  replicas: 2 # two replicas (instances) of the application will be created
+  template: # defines the template for creating Pods that managed by deployment
+    metadata:
+      labels: # assigns labels to the Pod template
+        app: karsajobs
+        category: backend
+    spec: # defines the specifications for the Pods
+      containers:
+        - name: karsajobs # sets the name of the container
+          image: mahendrabp/karsajobs:latest # specifies the Docker image, you have to use image in container registry
+          ports:
+            - containerPort: 8080 # specifies the ports exposed by the container
+          env: # defines environment variables for the container
+            - name: APP_PORT # sets an environment variable named "APP_PORT" to the value "8080."
+              value: '8080'
+            - name: MONGO_HOST #sets an environment variable named "MONGO_HOST" to the value "mongo" -> this name is form service mongo
+              value: mongo
+            - name: MONGO_USER # sets an environment variable named "MONGO_USER" using a Secret.
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret # get secret mongo-secret
+                  key: MONGO_ROOT_USERNAME # use this env from secret
+            - name: MONGO_PASS # same as above
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_ROOT_PASSWORD
+
