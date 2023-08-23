@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet # resource StatefulSet
+metadata:
+  name: mongo-statefulset # define name
+
+spec: # defines the specifications of the StatefulSet.
+  selector: # specifies the labels that the StatefulSet "should match"
+    matchLabels: # specifies the labels for matching.
+      app: mongo # key "app" with value "mongo"
+      category: database # key "category" with value "database"
+  serviceName: mongo # defines the name of service that will access the StatefulSet
+  replicas: 2 # set how many replica will be made
+  minReadySeconds: 10 # sets the minimum time in seconds that replica must be ready before it's call ready.
+
+  template: # defines the configuration for the template
+    metadata:
+      labels:
+        app: mongo # key "app" with value "mongo"
+        category: database # key "category" with value "database"
+    spec:
+      terminationGracePeriodSeconds: 10 # sets the time for graceful termination before the pod is stopped.
+      containers: # lists the containers
+        - name: mongo-db # names the container mongo-db
+          image: mongo:latest # using the latest version of the mongo's docker image
+          ports:
+            - containerPort: 27017 # ports exposed by the container
+              name: mongo # naming container port
+          env: # sets environment variables inside the container
+            - name: MONGO_INITDB_ROOT_USERNAME_FILE # defines an environment variable name.
+              value: /etc/mongo-credentials/MONGO_ROOT_USERNAME # sets the value of the environment variable.
+            - name: MONGO_INITDB_ROOT_PASSWORD_FILE # defines an environment variable name.
+              value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
+          volumeMounts: # Mounting volume ke dalam container
+            - name: mongo-data # refers to the volume's name as defined below in the volumes section
+              mountPath: /data/db # specifies the directory path inside the container where the volume will be mounted.
+            - name: mongo-config
+              mountPath: /config
+            - name: mongo-secret
+              mountPath: /etc/mongo-credentials
+
+      volumes: # define the volumes that can be mounted into pod
+        - name: mongo-data # name of the volume which can be referenced when defining volume mounts (above step) within the containers
+          persistentVolumeClaim: # mark as this volume is using a PVC
+            claimName: mongo-pvc # specifies the name of the PVC that this volume should use
+        - name: mongo-config #
+          configMap: # mark as this volume is using a configMap
+            name: mongo-config
+        - name: mongo-secret
+          secret: # using secret
+            secretName: mongo-secret # specifies the name of the Secret resource.
+

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap # use "ConfigMap" resource to use config map type
+metadata:
+  name: mongo-config # naming ConfigMap
+data: # define configuration data for config map (key-value pair)
+  mongo.conf: | # defining key name for configuration file. and the below is content config file
+    storage:
+      dbPath: /data/db
+

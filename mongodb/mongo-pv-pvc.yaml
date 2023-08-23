@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: PersistentVolume # use "PersistentVolume" resource to use persist volume type
+metadata:
+  name: mongo-pv # set name of PersistentVolume
+spec:
+  # https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+  storageClassName: standard # name of storage, you can change this value based on type, characteristic, policies or etc. it depends your cluster config
+  accessModes: # providers will have different capabilities and each PV's access modes are set to the specific modes supported by that particular volume. tldr, determine pods can be mount the same volume, and can read or write from or to it
+    - ReadWriteOnce # the volume can be mounted as read-write by a single node. ReadWriteOnce access mode still can allow multiple pods to access the volume when the pods are running on the same node. this suit for database that require read/write access its data
+  capacity: # defines the storage capacity of the PV
+    storage: 1Gi # set storage cap to 1 gigabyte
+  hostPath: # defines the type of volume as a local host path
+    path: '/mnt/data/mongo' # actual path on the host's fs where the data will be stored.
+
+--- # YAML document separator. mark the end of prev resource and after that start new resource
+
+apiVersion: v1
+kind: PersistentVolumeClaim # use "PersistentVolumeClaim" resource
+metadata:
+  name: mongo-pvc # set name of PersistentVolumeClaim
+spec:
+  storageClassName: standard #  specifies the desired storage class name to match the PV
+  accessModes: # the description same as PV
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+

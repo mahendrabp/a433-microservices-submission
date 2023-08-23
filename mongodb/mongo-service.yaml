@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service # use "Service" resource to use service type
+metadata:
+  name: mongo # name of service
+  labels: # key value pair to categorize resources
+    app: mongo # key "app" with value "mongo"
+    category: database # key "category" with value "database"
+
+spec: # spec of service
+  selector: # service discovery, it will automatically select and target the pods based on labels (key-value pair). selector allow to group or categorize resource. in service's context, selector will expose as a network service
+    app: mongo # any pod with this label will use mongo service
+    category: database
+  ports:
+    - port: 27017 # expose port 27017 for incoming tcp traffic
+    # - targetPort: 27071 # targetPort will forward incoming traffic into pod port, if you dont use this, kubernetes will assume the target port is same with port
+
