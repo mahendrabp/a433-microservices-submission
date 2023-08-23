@@ -30,12 +30,12 @@ spec: # defines the specifications of the StatefulSet.
               value: /etc/mongo-credentials/MONGO_ROOT_USERNAME # sets the value of the environment variable.
             - name: MONGO_INITDB_ROOT_PASSWORD_FILE # defines an environment variable name.
               value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
-          volumeMounts: # Mounting volume ke dalam container
+          volumeMounts: # mounting vol into container
             - name: mongo-data # refers to the volume's name as defined below in the volumes section
               mountPath: /data/db # specifies the directory path inside the container where the volume will be mounted.
-            - name: mongo-config
+            - name: mongo-config # name of config map that we made earlier
               mountPath: /config
-            - name: mongo-secret
+            - name: mongo-secret # name of secret that we made earlier
               mountPath: /etc/mongo-credentials
 
       volumes: # define the volumes that can be mounted into pod

@@ -26,7 +26,7 @@ spec: # defines the spec
             - name: APP_PORT # sets an environment variable named "APP_PORT" to the value "8080."
               value: '8080'
             - name: MONGO_HOST #sets an environment variable named "MONGO_HOST" to the value "mongo" -> this name is form service mongo
-              value: mongo
+              value: mongo # name of mongo service
             - name: MONGO_USER # sets an environment variable named "MONGO_USER" using a Secret.
               valueFrom:
                 secretKeyRef:
@@ -37,4 +37,3 @@ spec: # defines the spec
                 secretKeyRef:
                   name: mongo-secret
                   key: MONGO_ROOT_PASSWORD
-
