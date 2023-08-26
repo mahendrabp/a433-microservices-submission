@@ -20,10 +20,9 @@ spec: # defines the spec
       containers:
         - name: karsajobs-ui # sets the name of the container
           image: mahendrabp/karsajobs-ui:latest # specifies the Docker image, you have to use image in container registry
-          imagePullPolicy: Always
+          imagePullPolicy: Always # this purpose is when you want to ensure that the latest version of the image is always used
           ports:
             - containerPort: 8000 # specifies the ports exposed by the container
               #env:
               #- name: VUE_APP_BACKEND
               #value: "http://192.168.49.2:31209"
-
