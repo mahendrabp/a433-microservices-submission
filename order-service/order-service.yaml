@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  labels: # assigns labels
+    app: order-service
+    category: backend
+spec:
+  type: NodePort
+  ports: # specify the ports that the Service should expose
+    - port: 3000
+      targetPort: 3000
+  selector: # specifies how the Service should route traffic
+    app: order-service # selects Pods with this label
+    category: backend
+

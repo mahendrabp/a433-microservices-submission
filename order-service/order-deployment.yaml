@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-deployment
+spec:
+  selector:
+    matchLabels:
+      app: order-service
+      category: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: order-service
+        category: backend
+    spec:
+      containers:
+        - name: order-service
+          image: mahendrabp/order-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: '3000'
+            - name: AMQP_URL
+              value: 'amqp://rabbitmq.default.svc.cluster.local:5672'
+      initContainers:
+        - name: wait-for-rabbitmq
+          image: busybox:1.28
+          command: ['sh', '-c', 'sleep 30']
+

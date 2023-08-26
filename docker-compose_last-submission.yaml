@@ -20,6 +20,7 @@ services:
       - '3000:3000' #expose port from 3000 container to host 3000
     depends_on:
       - rabbitmq
+    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- npm start'
     environment:
       NODE_ENV: production
       AMQP_URL: amqp://guest:guest@rabbitmq:5672
@@ -36,6 +37,7 @@ services:
     depends_on:
       - rabbitmq
       - order-service
+    command: sh -c '/bin/wait-for-it.sh rabbitmq:5672 --timeout=30 -- npm start'
     environment:
       NODE_ENV: production
       AMQP_URL: amqp://guest:guest@rabbitmq:5672
