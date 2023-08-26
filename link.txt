@@ -6,8 +6,21 @@ Github repos:
 https://github.com/mahendrabp/a433-microservices-submission/tree/kubernetes
 
 Link (optional):
-karsajobs-ui: http://karsajobs.mahendrabp.id/manage-job
-karsajobs-api: http://api-karsajobs.mahendrabp.id
+karsajobs-ui: http://karsajobs.mahendrabp.id/manage-job (deleted)
+karsajobs-api: http://api-karsajobs.mahendrabp.id (deleted)
 
-Note:
-frontend will take some time to load, idk why, but maybe because frontend using dev env instead prod env, but it works actually
+---------------------------------------------------------------
+#last submission
+
+Image registry: 
+order-service: https://hub.docker.com/repository/docker/mahendrabp/order-service
+shipping-service: https://hub.docker.com/repository/docker/mahendrabp/shipping-service/general
+
+Github repos:
+order-service dockerfile: https://github.com/mahendrabp/a433-microservices-submission/blob/order-service/Dockerfile
+shipping-service dockerfile: https://github.com/mahendrabp/a433-microservices-submission/blob/shipping-service/Dockerfile
+docker-compose: https://github.com/mahendrabp/a433-microservices-submission/blob/kubernetes/docker-compose_last-submission.yaml
+order-service-k8s-manifest: https://github.com/mahendrabp/a433-microservices-submission/tree/kubernetes/order-service
+shipping-service-k8s-manifest: https://github.com/mahendrabp/a433-microservices-submission/tree/kubernetes/shipping-service
+rabbitmq-k8s-manifest: https://github.com/mahendrabp/a433-microservices-submission/tree/kubernetes/rabbitmq
+
