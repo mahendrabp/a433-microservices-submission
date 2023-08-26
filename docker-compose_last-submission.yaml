@@ -1,0 +1,56 @@
+version: '3.7'
+services:
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    container_name: 'rabbitmq-container'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq/
+      - rabbitmq-log:/var/log/rabbitmq
+    networks:
+      - rabbitmq_network
+
+  order-service:
+    container_name: order-service
+    restart: always
+    image: mahendrabp/order-service:latest
+    ports:
+      - '3000:3000' #expose port from 3000 container to host 3000
+    links: #links container
+      - rabbitmq
+    depends_on:
+      - rabbitmq
+    environment:
+      NODE_ENV: production
+      AMQP_URL: amqp://guest:guest@rabbitmq:5672
+      PORT: 3000
+    networks:
+      - rabbitmq_network
+
+  shipping-service:
+    container_name: shipping-service
+    restart: always
+    image: mahendrabp/shipping-service:latest
+    ports:
+      - '3001:3001' #expose port from 3000 container to host 3000
+    links: #links container
+      - rabbitmq
+    depends_on:
+      - rabbitmq
+    environment:
+      NODE_ENV: production
+      AMQP_URL: amqp://guest:guest@rabbitmq:5672
+      PORT: 3001
+    networks:
+      - rabbitmq_network
+
+volumes:
+  rabbitmq-data:
+  rabbitmq-log:
+
+networks:
+  rabbitmq_network:
+    driver: bridge
+
